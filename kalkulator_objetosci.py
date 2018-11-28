@@ -13,14 +13,29 @@ def ustaw_skok_ciezaru(ciezar):
         skok = 1.25
     return skok
 
-def licz_warianty(c, p, serie, skok, objetosc):
+def dodaj_powtorzenia_zmiesz_ciezar(c, powtorzenia, serie, skok, objetosc):
     for i in range(0, 5):
-        p+=1
-        #print('c {0} i p {1}'.format(c, p))
-        while( (licz_objetosc(c, p, serie) < proc_minus_obj) and (licz_objetosc(c, p, serie) < proc_plus_obj) ):
+        j = 0
+        p = powtorzenia
+        for j in range(0, 5):
+            if licz_objetosc(c, p, serie) >= proc_minus_obj and licz_objetosc(c, p, serie) <= proc_plus_obj: 
+                wyswietl(c, p, serie, licz_objetosc(c, p, serie))
             p+=1
-        c-=float(skok)    
-        wyswietl(c, p, serie, licz_objetosc(c, p, serie))
+        if licz_objetosc(c, p, serie) >= proc_minus_obj and licz_objetosc(c, p, serie) <= proc_plus_obj:
+            wyswietl(c, p, serie, licz_objetosc(c, p, serie))
+        c-=float(skok)   
+
+def zmniejsz_powtorzenia_dodaj_ciezar(ciezar, p, serie, skok, objetosc):
+    for i in range(0, 5):
+        j = 0
+        c = ciezar
+        for j in range(0, 7):
+            if licz_objetosc(c, p, serie) >= proc_minus_obj and licz_objetosc(c, p, serie) <= proc_plus_obj: 
+                wyswietl(c, p, serie, licz_objetosc(c, p, serie))
+            c+=float(skok)             
+        if licz_objetosc(c, p, serie) >= proc_minus_obj and licz_objetosc(c, p, serie) <= proc_plus_obj:
+            wyswietl(c, p, serie, licz_objetosc(c, p, serie))
+        p-=1
 
 print('podaj ciezar')
 ciezar = input()
@@ -39,23 +54,17 @@ wyswietl(ciezar, powtorzenia, serie, objetosc)
 c = float(ciezar)
 p = int(powtorzenia)
 
-procent_plus = float(objetosc * 5 / 100)
+procent_plus = float(objetosc * 8 / 100)
 procent_minus = float(objetosc * 3 / 100)
 proc_plus_obj = float(objetosc) + float(procent_plus)
 proc_minus_obj = float(objetosc) - float(procent_minus)
 
-print('\ndla 1.25:')
-licz_warianty(c, p, serie, 1.25, objetosc)
-print('\ndla 2.5:')
-licz_warianty(c, p, serie, 2.5, objetosc)
+print('\nwiece powtorzen dla 1.25 przy objętosci {0}:'.format(objetosc))
+dodaj_powtorzenia_zmiesz_ciezar(c, p, serie, 1.25, objetosc)
+print('\nwiecej powtorzen dla 2.5 przy objętosci {0}:'.format(objetosc))
+dodaj_powtorzenia_zmiesz_ciezar(c, p, serie, 2.5, objetosc)
+print('\nmniej powtorzen dla 1.25 przy objętosci {0}:'.format(objetosc))
+zmniejsz_powtorzenia_dodaj_ciezar(c, p, serie, 1.25, objetosc)
+print('\nmniej powtorzen dla 2.5 przy objętosci {0}:'.format(objetosc))
+zmniejsz_powtorzenia_dodaj_ciezar(c, p, serie, 2.5, objetosc)
 
-'''
-    obj = licz_objetosc(c, p, serie)
-    if (float(obj) + skok) < float(objetosc):
-        p+=1
-        obj2 = licz_objetosc(c, p, serie)
-        if float(obj2) > float(obj) and float(obj2) < float(objetosc):
-            print('obj2: ', obj2)
-        else:
-            print('obj: ', obj) 
-'''
